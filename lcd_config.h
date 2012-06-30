@@ -5,8 +5,8 @@
 #define LCD_PORT P1OUT
 #define LCD_DIR P1DIR
 
-#define LCD_RS BIT0
-#define LCD_EN BIT1
+#define LCD_RS BIT1
+#define LCD_EN BIT2
 
 #define LCD_D4 BIT4
 #define LCD_D5 BIT5

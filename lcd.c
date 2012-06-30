@@ -3,22 +3,31 @@
 #include "lcd_config.h"
 #include "lcd.h"
 
+#if LCD_FCPU == 8000000
+	#define LCD_US_DELAY_CYCLES 8
+	#define LCD_MS_DELAY_CYCLES 8000
+#elif LCD_FCPU == 16000000
+	#define LCD_US_DELAY_CYCLES 16
+	#define LCD_MS_DELAY_CYCLES 16000
+#else
+	#define LCD_US_DELAY_CYCLES 1
+	#define LCD_MS_DELAY_CYCLES 1000
+#endif
+
 uint8_t lcd_pins[4] = {LCD_D4, LCD_D5, LCD_D6, LCD_D7};
 
 void lcd_delay_ms(uint16_t t) {
-  uint16_t i, j;
-  for (i = 0; i < (LCD_FCPU/1000); i++) {
-    for (j = 0; j < t; j++) {
-      nop();
-    }
-  }
+  uint16_t i;
+	for (i = 0; i < t; i++) {
+		__delay_cycles(LCD_MS_DELAY_CYCLES);
+	}
 }
 
 void lcd_delay_us(uint16_t t) {
   uint16_t i;
-  for (i = 0; i < (LCD_FCPU/1000000) * t; i++) {
-    nop();
-  }
+	for (i = 0; i < t; i++){
+		__delay_cycles(LCD_US_DELAY_CYCLES);
+	}
 }
 
 void lcd_send4(uint8_t data) {
